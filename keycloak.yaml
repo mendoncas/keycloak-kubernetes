@@ -15,20 +15,37 @@ spec:
         app: keycloak
     spec:
       containers:
-      - name: keycloak
-        image: quay.io/keycloak/keycloak:17.0.0
-        args: ["start-dev"]
-        env:
-        - name: KEYCLOAK_ADMIN
-          value: "admin"
-        - name: KEYCLOAK_ADMIN_PASSWORD
-          value: "admin"
-        - name: KC_PROXY
-          value: "edge"
-        ports:
-        - name: http
-          containerPort: 8080
-        readinessProbe:
-          httpGet:
-            path: /realms/master
-            port: 8080
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:17.0.0
+          args: ["start-dev"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-keycloak
+                  key: KEYCLOAK_ADMIN
+
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-keycloak
+                  key: KEYCLOAK_ADMIN_PASSWORD
+
+            - name: KC_PROXY
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-keycloak
+                  key: KC_PROXY
+
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /realms/master
+              port: 8080
+
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-keycloak
