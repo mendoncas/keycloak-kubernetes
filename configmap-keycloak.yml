@@ -3,6 +3,14 @@ kind: ConfigMap
 metadata:
   name: configmap-keycloak
 data:
+  KEYCLOAK_USER: "user"
+  KEYCLOAK_PASSWORD: "user"
   KEYCLOAK_ADMIN: "admin"
   KEYCLOAK_ADMIN_PASSWORD : "admin"
   KC_PROXY: "edge"
+  PROXY_ADDRESS_FORWARDING: "true"
+  DB_VENDOR: "POSTGRES"
+  DB_ADDR: "postgres"
+  DB_DATABASE: "keycloak"
+  DB_USER: "root"
+  DB_PASSWORD: "password"
